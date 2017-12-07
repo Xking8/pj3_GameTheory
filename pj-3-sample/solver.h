@@ -29,6 +29,7 @@ public:
 	}*/
 	solver(const std::string& args) {
 		// TODO: explore the tree and save the result
+		result = new double[2][13][13][13][13][13][13]();
 		std::cout << "feel free to display some messages..." << std::endl;
 		std::cout << "solver is initialized." << std::endl << std::endl;
 		board2x3 game;
@@ -36,7 +37,7 @@ public:
 		Tree expTree;
 
 		expTree.root->child[0] = new Node(game,state_type::illegal);
-		expTree.expectimax_traversal();
+		expTree.expectimax_traversal(result);
 		
 	}
 
@@ -47,5 +48,5 @@ public:
 
 private:
 	// TODO: place your transposition table here
-	//double result_a [13][13][13][13][13][13]={0};// 2 = after or before
+	double (*result) [13][13][13][13][13][13];// 2 = before(0), and after(1)
 };
