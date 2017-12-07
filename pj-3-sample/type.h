@@ -34,6 +34,6 @@ public:
 	bool is_after()   const { return t == after; }
 	bool is_illegal() const { return t == illegal; }
 
-private:
+//private:
 	type t;
 };

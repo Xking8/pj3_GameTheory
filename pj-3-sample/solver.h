@@ -22,11 +22,11 @@ public:
 	};
 
 public:
-	void copystate(int* s, board2x3& b) {
+	/*void copystate(int* s, board2x3& b) {
 		s[0]=b(0);s[1]=b(1);
 		s[2]=b(2);s[3]=b(3);
 		s[4]=b(4);s[5]=b(5);
-	}
+	}*/
 	solver(const std::string& args) {
 		// TODO: explore the tree and save the result
 		std::cout << "feel free to display some messages..." << std::endl;
@@ -34,10 +34,9 @@ public:
 		board2x3 game;
 		std::cout<<game;
 		Tree expTree;
-		int s[6]; //= {0, 0, 0, 0, 0, 0};//here TODO copy game board to local char
-		copystate(s,game);
-		expTree.root->child[0] = new Node(s,state_type::illegal);
-		expTree.expectimax_traversal(game);
+
+		expTree.root->child[0] = new Node(game,state_type::illegal);
+		expTree.expectimax_traversal();
 		
 	}
 
@@ -48,4 +47,5 @@ public:
 
 private:
 	// TODO: place your transposition table here
+	//double result_a [13][13][13][13][13][13]={0};// 2 = after or before
 };

@@ -28,6 +28,19 @@ public:
 	const std::array<int, 3>& operator [](const int& i) const { return tile[i]; }
 	int& operator ()(const int& i) { return tile[i / 3][i % 3]; }
 	const int& operator ()(const int& i) const { return tile[i / 3][i % 3]; }
+	bool illegal() {
+		int count = 0;
+		for(int i=0; i<2; i++)
+			for(int j=0; j<3; j++)
+			{
+				if(tile[i][j]==0)
+					count++;
+			}
+		if(count>4)
+			return 1;
+		else
+			return 0;
+	}
 
 public:
 	bool operator ==(const board2x3& b) const { return tile == b.tile; }
@@ -69,8 +82,8 @@ public:
 private:
 	int move_left(int& left, int& right) {
 		if (left) {
-			if (left == right-1 || left == right+1) {
-				left += 1;
+			if (right &&(left == right-1 || left == right+1 || (right==1&&left==1)) ) {
+				left =std::max(left,right) + 1;
 				right = 0;
 				//return 1 << left;
 				return fibdriver(left);
@@ -84,13 +97,20 @@ private:
 
 public:
 	int move_left() {
+		//std::cout<<"========================================================in move left"<<std::endl;
 		board2x3 prev = *this;
+			
 		int score = 0;
 		for (int r = 0; r < 2; r++) {
 			int s = move_left(tile[r][0], tile[r][1]) + move_left(tile[r][1], tile[r][2]);
 			if (s == 0) s += move_left(tile[r][0], tile[r][1]);
 			score += s;
 		}
+		//if(*this==prev)
+		//	std::cout<<"====================same"<<std::endl;
+		//std::cout<<prev;
+		//std::cout<<*this;
+		//std::cout<<"ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"<<std::endl;
 		return (*this != prev) ? score : -1;
 	}
 	int move_right() {
@@ -100,11 +120,18 @@ public:
 		return score;
 	}
 	int move_up() {
+		//std::cout<<"=====================in move up"<<std::endl;
 		board2x3 prev = *this;
 		int score = 0;
 		for (int c = 0; c < 3; c++) {
 			score += move_left(tile[0][c], tile[1][c]);
 		}
+		//if(*this==prev)
+		//	std::cout<<"====================same"<<std::endl;
+
+		//std::cout<<prev;
+		//std::cout<<*this;
+		//std::cout<<"ooooooooooooooooooooooooooooooooooooooo"<<std::endl;
 		return (*this != prev) ? score : -1;
 	}
 	int move_down() {
